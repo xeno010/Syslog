@@ -1,5 +1,5 @@
-#include <stdio.h>
-#include <stdarg.h>
+#include <cstdio>
+#include <cstdarg>
 #include <Arduino.h>
 
 #include "Syslog.h"
@@ -9,7 +9,7 @@
 Syslog::Syslog(UDP &client, uint8_t protocol) {
     this->_client = &client;
     this->_protocol = protocol;
-    this->_server = NULL;
+    this->_server = nullptr;
     this->_port = 0;
     this->_deviceHostname = SYSLOG_NILVALUE;
     this->_appName = SYSLOG_NILVALUE;
@@ -22,20 +22,20 @@ Syslog::Syslog(UDP &client, const char *server, uint16_t port, const char *devic
     this->_protocol = protocol;
     this->_server = server;
     this->_port = port;
-    this->_deviceHostname = (deviceHostname == NULL) ? SYSLOG_NILVALUE : deviceHostname;
-    this->_appName = (appName == NULL) ? SYSLOG_NILVALUE : appName;
+    this->_deviceHostname = (deviceHostname == nullptr) ? SYSLOG_NILVALUE : deviceHostname;
+    this->_appName = (appName == nullptr) ? SYSLOG_NILVALUE : appName;
     this->_priDefault = priDefault;
 }
 
-Syslog::Syslog(UDP &client, IPAddress ip, uint16_t port, const char *deviceHostname, const char *appName, uint16_t priDefault,
+Syslog::Syslog(UDP &client, const IPAddress& ip, uint16_t port, const char *deviceHostname, const char *appName, uint16_t priDefault,
                uint8_t protocol) {
     this->_client = &client;
     this->_protocol = protocol;
     this->_ip = ip;
-    this->_server = NULL;
+    this->_server = nullptr;
     this->_port = port;
-    this->_deviceHostname = (deviceHostname == NULL) ? SYSLOG_NILVALUE : deviceHostname;
-    this->_appName = (appName == NULL) ? SYSLOG_NILVALUE : appName;
+    this->_deviceHostname = (deviceHostname == nullptr) ? SYSLOG_NILVALUE : deviceHostname;
+    this->_appName = (appName == nullptr) ? SYSLOG_NILVALUE : appName;
     this->_priDefault = priDefault;
 }
 
@@ -45,20 +45,20 @@ Syslog &Syslog::server(const char *server, uint16_t port) {
     return *this;
 }
 
-Syslog &Syslog::server(IPAddress ip, uint16_t port) {
+Syslog &Syslog::server(const IPAddress& ip, uint16_t port) {
     this->_ip = ip;
-    this->_server = NULL;
+    this->_server = nullptr;
     this->_port = port;
     return *this;
 }
 
 Syslog &Syslog::deviceHostname(const char *deviceHostname) {
-    this->_deviceHostname = (deviceHostname == NULL) ? SYSLOG_NILVALUE : deviceHostname;
+    this->_deviceHostname = (deviceHostname == nullptr) ? SYSLOG_NILVALUE : deviceHostname;
     return *this;
 }
 
 Syslog &Syslog::appName(const char *appName) {
-    this->_appName = (appName == NULL) ? SYSLOG_NILVALUE : appName;
+    this->_appName = (appName == nullptr) ? SYSLOG_NILVALUE : appName;
     return *this;
 }
 
@@ -202,7 +202,7 @@ bool Syslog::log(const char *message) {
 inline bool Syslog::_sendLog(uint16_t pri, const char *message) {
     int result;
 
-    if ((this->_server == NULL && this->_ip == INADDR_NONE) || this->_port == 0) {
+    if ((this->_server == nullptr && this->_ip == INADDR_NONE) || this->_port == 0) {
         return false;
     }
 
@@ -216,7 +216,7 @@ inline bool Syslog::_sendLog(uint16_t pri, const char *message) {
         pri = LOG_MAKEPRI(LOG_FAC(this->_priDefault), pri);
     }
 
-    if (this->_server != NULL) {
+    if (this->_server != nullptr) {
         result = this->_client->beginPacket(this->_server, this->_port);
     } else {
         result = this->_client->beginPacket(this->_ip, this->_port);
@@ -260,7 +260,7 @@ inline bool Syslog::_sendLog(uint16_t pri, const char *message) {
 inline bool Syslog::_sendLog(uint16_t pri, const __FlashStringHelper *message) {
     int result;
 
-    if ((this->_server == NULL && this->_ip == INADDR_NONE) || this->_port == 0) {
+    if ((this->_server == nullptr && this->_ip == INADDR_NONE) || this->_port == 0) {
         return false;
     }
 
@@ -274,7 +274,7 @@ inline bool Syslog::_sendLog(uint16_t pri, const __FlashStringHelper *message) {
         pri = LOG_MAKEPRI(LOG_FAC(this->_priDefault), pri);
     }
 
-    if (this->_server != NULL) {
+    if (this->_server != nullptr) {
         result = this->_client->beginPacket(this->_server, this->_port);
     } else {
         result = this->_client->beginPacket(this->_ip, this->_port);

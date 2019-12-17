@@ -1,8 +1,8 @@
 #ifndef SYSLOG_H
 #define SYSLOG_H
 
-#include <stdarg.h>
-#include <inttypes.h>
+#include <cstdarg>
+#include <cinttypes>
 #include <WString.h>
 #include <IPAddress.h>
 #include <Udp.h>
@@ -34,51 +34,51 @@
  *
  * priorities (these are ordered)
  */
-#define LOG_EMERG 0 /* system is unusable */
-#define LOG_ALERT 1 /* action must be taken immediately */
-#define LOG_CRIT  2 /* critical conditions */
-#define LOG_ERR   3 /* error conditions */
-#define LOG_WARNING 4 /* warning conditions */
-#define LOG_NOTICE  5 /* normal but significant condition */
-#define LOG_INFO  6 /* informational */
-#define LOG_DEBUG 7 /* debug-level messages */
+#define LOG_EMERG       0U /* system is unusable */
+#define LOG_ALERT       1U /* action must be taken immediately */
+#define LOG_CRIT        2U /* critical conditions */
+#define LOG_ERR         3U /* error conditions */
+#define LOG_WARNING     4U /* warning conditions */
+#define LOG_NOTICE      5U /* normal but significant condition */
+#define LOG_INFO        6U /* informational */
+#define LOG_DEBUG       7U /* debug-level messages */
 
-#define LOG_PRIMASK 0x07  /* mask to extract priority part (internal) */
+#define LOG_PRIMASK 0x07U  /* mask to extract priority part (internal) */
 /* extract priority */
 #define LOG_PRI(p)  ((p) & LOG_PRIMASK)
-#define LOG_MAKEPRI(fac, pri) (((fac) << 3) | (pri))
+#define LOG_MAKEPRI(fac, pri) (((fac) << 3U) | (pri))
 
 /* facility codes */
-#define LOG_KERN  (0<<3)  /* kernel messages */
-#define LOG_USER  (1<<3)  /* random user-level messages */
-#define LOG_MAIL  (2<<3)  /* mail system */
-#define LOG_DAEMON  (3<<3)  /* system daemons */
-#define LOG_AUTH  (4<<3)  /* security/authorization messages */
-#define LOG_SYSLOG  (5<<3)  /* messages generated internally by syslogd */
-#define LOG_LPR   (6<<3)  /* line printer subsystem */
-#define LOG_NEWS  (7<<3)  /* network news subsystem */
-#define LOG_UUCP  (8<<3)  /* UUCP subsystem */
-#define LOG_CRON  (9<<3)  /* clock daemon */
-#define LOG_AUTHPRIV  (10<<3) /* security/authorization messages (private) */
-#define LOG_FTP   (11<<3) /* ftp daemon */
+#define LOG_KERN        (0U<<3U)  /* kernel messages */
+#define LOG_USER        (1U<<3U)  /* random user-level messages */
+#define LOG_MAIL        (2U<<3U)  /* mail system */
+#define LOG_DAEMON      (3U<<3U)  /* system daemons */
+#define LOG_AUTH        (4U<<3U)  /* security/authorization messages */
+#define LOG_SYSLOG      (5U<<3U)  /* messages generated internally by syslogd */
+#define LOG_LPR         (6U<<3U)  /* line printer subsystem */
+#define LOG_NEWS        (7U<<3U)  /* network news subsystem */
+#define LOG_UUCP        (8U<<3U)  /* UUCP subsystem */
+#define LOG_CRON        (9U<<3U)  /* clock daemon */
+#define LOG_AUTHPRIV    (10<<3U) /* security/authorization messages (private) */
+#define LOG_FTP         (11U<<3U) /* ftp daemon */
 
 /* other codes through 15 reserved for system use */
-#define LOG_LOCAL0  (16<<3) /* reserved for local use */
-#define LOG_LOCAL1  (17<<3) /* reserved for local use */
-#define LOG_LOCAL2  (18<<3) /* reserved for local use */
-#define LOG_LOCAL3  (19<<3) /* reserved for local use */
-#define LOG_LOCAL4  (20<<3) /* reserved for local use */
-#define LOG_LOCAL5  (21<<3) /* reserved for local use */
-#define LOG_LOCAL6  (22<<3) /* reserved for local use */
-#define LOG_LOCAL7  (23<<3) /* reserved for local use */
+#define LOG_LOCAL0      (16U<<3U) /* reserved for local use */
+#define LOG_LOCAL1      (17U<<3U) /* reserved for local use */
+#define LOG_LOCAL2      (18U<<3U) /* reserved for local use */
+#define LOG_LOCAL3      (19U<<3U) /* reserved for local use */
+#define LOG_LOCAL4      (20U<<3U) /* reserved for local use */
+#define LOG_LOCAL5      (21U<<3U) /* reserved for local use */
+#define LOG_LOCAL6      (22U<<3U) /* reserved for local use */
+#define LOG_LOCAL7      (23U<<3U) /* reserved for local use */
 
-#define LOG_NFACILITIES 24  /* current number of facilities */
-#define LOG_FACMASK 0x03f8  /* mask to extract facility part */
+#define LOG_NFACILITIES 24U  /* current number of facilities */
+#define LOG_FACMASK 0x03f8U  /* mask to extract facility part */
 /* facility of pri */
-#define LOG_FAC(p)  (((p) & LOG_FACMASK) >> 3)
+#define LOG_FAC(p)  (((p) & LOG_FACMASK) >> 3U)
 
-#define LOG_MASK(pri)  (1 << (pri))    /* mask for one priority */
-#define LOG_UPTO(pri)  ((1 << ((pri)+1)) - 1)    /* all priorities through pri */
+#define LOG_MASK(pri)  (1U << (pri))    /* mask for one priority */
+#define LOG_UPTO(pri)  ((1U << ((pri)+1)) - 1)    /* all priorities through pri */
 
 class Syslog {
 private:
@@ -97,14 +97,14 @@ private:
     bool _sendLog(uint16_t pri, const __FlashStringHelper *message);
 
 public:
-    Syslog(UDP &client, uint8_t protocol = SYSLOG_PROTO_IETF);
+    explicit Syslog(UDP &client, uint8_t protocol = SYSLOG_PROTO_IETF);
     Syslog(UDP &client, const char *server, uint16_t port, const char *deviceHostname = SYSLOG_NILVALUE,
            const char *appName = SYSLOG_NILVALUE, uint16_t priDefault = LOG_KERN, uint8_t protocol = SYSLOG_PROTO_IETF);
-    Syslog(UDP &client, IPAddress ip, uint16_t port, const char *deviceHostname = SYSLOG_NILVALUE, const char *appName = SYSLOG_NILVALUE,
+    Syslog(UDP &client, const IPAddress& ip, uint16_t port, const char *deviceHostname = SYSLOG_NILVALUE, const char *appName = SYSLOG_NILVALUE,
            uint16_t priDefault = LOG_KERN, uint8_t protocol = SYSLOG_PROTO_IETF);
 
     Syslog &server(const char *server, uint16_t port);
-    Syslog &server(IPAddress ip, uint16_t port);
+    Syslog &server(const IPAddress& ip, uint16_t port);
     Syslog &deviceHostname(const char *deviceHostname);
     Syslog &appName(const char *appName);
     Syslog &defaultPriority(uint16_t pri = LOG_KERN);
