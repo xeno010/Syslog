@@ -227,7 +227,7 @@ inline bool Syslog::_sendLog(uint16_t pri, const char *message) {
   this->_client->print(' ');
   this->_client->print(this->_appName);
   if (this->_protocol == SYSLOG_PROTO_IETF) {
-    this->_client->print(F(" - - - \xEF\xBB\xBF"));
+    this->_client->print(F(" - - - "));
   } else {
     this->_client->print(F("[0]: "));
   }
@@ -277,7 +277,7 @@ inline bool Syslog::_sendLog(uint16_t pri, const __FlashStringHelper *message) {
   this->_client->print(' ');
   this->_client->print(this->_appName);
   if (this->_protocol == SYSLOG_PROTO_IETF) {
-    this->_client->print(F(" - - - \xEF\xBB\xBF"));
+    this->_client->print(F(" - - - "));
   } else {
     this->_client->print(F("[0]: "));
   }
