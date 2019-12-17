@@ -215,7 +215,11 @@ inline bool Syslog::_sendLog(uint16_t pri, const char *message) {
   this->_client->print('<');
   this->_client->print(pri);
   if (this->_protocol == SYSLOG_PROTO_IETF) {
-    this->_client->print(F(">1 - "));
+      if(this->_useFakeDatetime) {
+          this->_client->print(F(">1 2017-02-28T12:00:00.009Z "));
+      } else {
+          this->_client->print(F(">1 - "));
+      }
   } else {
     this->_client->print(F(">"));
   }
@@ -261,7 +265,11 @@ inline bool Syslog::_sendLog(uint16_t pri, const __FlashStringHelper *message) {
   this->_client->print('<');
   this->_client->print(pri);
   if (this->_protocol == SYSLOG_PROTO_IETF) {
-    this->_client->print(F(">1 - "));
+      if(this->_useFakeDatetime) {
+        this->_client->print(F(">1 2017-02-28T12:00:00.009Z "));
+      } else {
+        this->_client->print(F(">1 - "));
+      }
   } else {
     this->_client->print(F(">"));
   }
@@ -278,4 +286,10 @@ inline bool Syslog::_sendLog(uint16_t pri, const __FlashStringHelper *message) {
 
 
   return true;
+}
+
+Syslog &Syslog::setUseFakeDatetime(bool used) {
+    this->_useFakeDatetime = used;
+
+    return *this;
 }

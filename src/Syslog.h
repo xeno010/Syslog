@@ -91,6 +91,7 @@ class Syslog {
     const char* _appName;
     uint16_t _priDefault;
     uint8_t _priMask = 0xff;
+    bool _useFakeDatetime = false;
 
     bool _sendLog(uint16_t pri, const char *message);
     bool _sendLog(uint16_t pri, const __FlashStringHelper *message);
@@ -105,6 +106,7 @@ class Syslog {
     Syslog &deviceHostname(const char* deviceHostname);
     Syslog &appName(const char* appName);
     Syslog &defaultPriority(uint16_t pri = LOG_KERN);
+    Syslog &setUseFakeDatetime(bool used);
 
     Syslog &logMask(uint8_t priMask);
 
