@@ -1,5 +1,5 @@
 #ifndef SYSLOG_H
-#define SYSLOG_H 
+#define SYSLOG_H
 
 #include <stdarg.h>
 #include <inttypes.h>
@@ -44,7 +44,7 @@
 #define LOG_DEBUG 7 /* debug-level messages */
 
 #define LOG_PRIMASK 0x07  /* mask to extract priority part (internal) */
-        /* extract priority */
+/* extract priority */
 #define LOG_PRI(p)  ((p) & LOG_PRIMASK)
 #define LOG_MAKEPRI(fac, pri) (((fac) << 3) | (pri))
 
@@ -74,21 +74,21 @@
 
 #define LOG_NFACILITIES 24  /* current number of facilities */
 #define LOG_FACMASK 0x03f8  /* mask to extract facility part */
-                            /* facility of pri */
+/* facility of pri */
 #define LOG_FAC(p)  (((p) & LOG_FACMASK) >> 3)
 
-#define LOG_MASK(pri)  (1 << (pri))	/* mask for one priority */
-#define LOG_UPTO(pri)  ((1 << ((pri)+1)) - 1)	/* all priorities through pri */
+#define LOG_MASK(pri)  (1 << (pri))    /* mask for one priority */
+#define LOG_UPTO(pri)  ((1 << ((pri)+1)) - 1)    /* all priorities through pri */
 
 class Syslog {
-  private:
-    UDP* _client;
+private:
+    UDP *_client;
     uint8_t _protocol;
     IPAddress _ip;
-    const char* _server;
+    const char *_server;
     uint16_t _port;
-    const char* _deviceHostname;
-    const char* _appName;
+    const char *_deviceHostname;
+    const char *_appName;
     uint16_t _priDefault;
     uint8_t _priMask = 0xff;
     bool _useFakeDatetime = false;
@@ -96,15 +96,17 @@ class Syslog {
     bool _sendLog(uint16_t pri, const char *message);
     bool _sendLog(uint16_t pri, const __FlashStringHelper *message);
 
-  public:
+public:
     Syslog(UDP &client, uint8_t protocol = SYSLOG_PROTO_IETF);
-    Syslog(UDP &client, const char* server, uint16_t port, const char* deviceHostname = SYSLOG_NILVALUE, const char* appName = SYSLOG_NILVALUE, uint16_t priDefault = LOG_KERN, uint8_t protocol = SYSLOG_PROTO_IETF);
-    Syslog(UDP &client, IPAddress ip, uint16_t port, const char* deviceHostname = SYSLOG_NILVALUE, const char* appName = SYSLOG_NILVALUE, uint16_t priDefault = LOG_KERN, uint8_t protocol = SYSLOG_PROTO_IETF);
+    Syslog(UDP &client, const char *server, uint16_t port, const char *deviceHostname = SYSLOG_NILVALUE,
+           const char *appName = SYSLOG_NILVALUE, uint16_t priDefault = LOG_KERN, uint8_t protocol = SYSLOG_PROTO_IETF);
+    Syslog(UDP &client, IPAddress ip, uint16_t port, const char *deviceHostname = SYSLOG_NILVALUE, const char *appName = SYSLOG_NILVALUE,
+           uint16_t priDefault = LOG_KERN, uint8_t protocol = SYSLOG_PROTO_IETF);
 
-    Syslog &server(const char* server, uint16_t port);
+    Syslog &server(const char *server, uint16_t port);
     Syslog &server(IPAddress ip, uint16_t port);
-    Syslog &deviceHostname(const char* deviceHostname);
-    Syslog &appName(const char* appName);
+    Syslog &deviceHostname(const char *deviceHostname);
+    Syslog &appName(const char *appName);
     Syslog &defaultPriority(uint16_t pri = LOG_KERN);
     Syslog &setUseFakeDatetime(bool used);
 
@@ -116,7 +118,7 @@ class Syslog {
 
     bool vlogf(uint16_t pri, const char *fmt, va_list args) __attribute__((format(printf, 3, 0)));
     bool vlogf_P(uint16_t pri, PGM_P fmt_P, va_list args) __attribute__((format(printf, 3, 0)));
-    
+
     bool logf(uint16_t pri, const char *fmt, ...) __attribute__((format(printf, 3, 4)));
     bool logf(const char *fmt, ...) __attribute__((format(printf, 2, 3)));
 
